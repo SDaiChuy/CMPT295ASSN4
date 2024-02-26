@@ -1,116 +1,120 @@
 	.file	"main.c"
 	.text
-	.def	printf;	.scl	3;	.type	32;	.endef
-	.seh_proc	printf
-printf:
-	pushq	%rsi
-	.seh_pushreg	%rsi
-	pushq	%rbx
-	.seh_pushreg	%rbx
-	subq	$56, %rsp
-	.seh_stackalloc	56
-	.seh_endprologue
-	movq	%rcx, %rbx
-	movq	%rdx, 88(%rsp)
-	movq	%r8, 96(%rsp)
-	movq	%r9, 104(%rsp)
-	leaq	88(%rsp), %rsi
-	movq	%rsi, 40(%rsp)
-	movl	$1, %ecx
-	call	*__imp___acrt_iob_func(%rip)
-	movq	%rax, %rcx
-	movq	%rsi, %r8
-	movq	%rbx, %rdx
-	call	__mingw_vfprintf
-	addq	$56, %rsp
-	popq	%rbx
-	popq	%rsi
-	ret
-	.seh_endproc
-	.def	__main;	.scl	2;	.type	32;	.endef
-	.section .rdata,"dr"
+	.section	.rodata.str1.1,"aMS",@progbits,1
 .LC0:
-	.ascii "%d < %d -> %d\12\0"
+	.string	"%d < %d -> %d\n"
 .LC1:
-	.ascii "%d + %d = %d\12\0"
+	.string	"%d + %d = %d\n"
 .LC2:
-	.ascii "%d - %d = %d\12\0"
+	.string	"%d - %d = %d\n"
 .LC3:
-	.ascii "%d * %d = %d\12\0"
+	.string	"%d * %d = %d\n"
+	.section	.rodata.str1.8,"aMS",@progbits,1
 	.align 8
 .LC4:
-	.ascii "Must supply 2 integers arguments.\12\0"
+	.string	"Must supply 2 integers arguments."
 	.text
 	.globl	main
-	.def	main;	.scl	2;	.type	32;	.endef
-	.seh_proc	main
+	.type	main, @function
 main:
-	pushq	%rsi
-	.seh_pushreg	%rsi
+.LFB39:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
 	pushq	%rbx
-	.seh_pushreg	%rbx
-	subq	$40, %rsp
-	.seh_stackalloc	40
-	.seh_endprologue
-	movl	%ecx, %ebx
-	movq	%rdx, %rsi
-	call	__main
-	cmpl	$3, %ebx
-	jne	.L3
-	movq	8(%rsi), %rcx
-	call	atoi
+	.cfi_def_cfa_offset 24
+	.cfi_offset 3, -24
+	subq	$8, %rsp
+	.cfi_def_cfa_offset 32
+	cmpl	$3, %edi
+	jne	.L2
+	movq	%rsi, %rbp
+	movq	8(%rsi), %rdi
+	movl	$10, %edx
+	movl	$0, %esi
+	call	strtol@PLT
 	movl	%eax, %ebx
-	movq	16(%rsi), %rcx
-	call	atoi
+	movq	16(%rbp), %rdi
+	movl	$10, %edx
+	movl	$0, %esi
+	call	strtol@PLT
+	movl	%eax, %ebp
 	movl	%eax, %esi
-	movl	%eax, %edx
-	movl	%ebx, %ecx
-	call	lessThan
-	movl	%eax, %r9d
-	movl	%esi, %r8d
+	movl	%ebx, %edi
+	call	lessThan@PLT
+	movl	%eax, %r8d
+	movl	%ebp, %ecx
 	movl	%ebx, %edx
-	leaq	.LC0(%rip), %rcx
-	call	printf
-	movl	%esi, %edx
-	movl	%ebx, %ecx
-	call	plus
-	movl	%eax, %r9d
-	movl	%esi, %r8d
-	movl	%ebx, %edx
-	leaq	.LC1(%rip), %rcx
-	call	printf
-	movl	%esi, %edx
-	movl	%ebx, %ecx
-	call	minus
-	movl	%eax, %r9d
-	movl	%esi, %r8d
-	movl	%ebx, %edx
-	leaq	.LC2(%rip), %rcx
-	call	printf
-	movl	%esi, %edx
-	movl	%ebx, %ecx
-	call	mul
-	movl	%eax, %r9d
-	movl	%esi, %r8d
-	movl	%ebx, %edx
-	leaq	.LC3(%rip), %rcx
-	call	printf
+	leaq	.LC0(%rip), %rsi
+	movl	$1, %edi
 	movl	$0, %eax
-.L2:
-	addq	$40, %rsp
+	call	__printf_chk@PLT
+	movl	%ebp, %esi
+	movl	%ebx, %edi
+	call	plus@PLT
+	movl	%eax, %r8d
+	movl	%ebp, %ecx
+	movl	%ebx, %edx
+	leaq	.LC1(%rip), %rsi
+	movl	$1, %edi
+	movl	$0, %eax
+	call	__printf_chk@PLT
+	movl	%ebp, %esi
+	movl	%ebx, %edi
+	call	minus@PLT
+	movl	%eax, %r8d
+	movl	%ebp, %ecx
+	movl	%ebx, %edx
+	leaq	.LC2(%rip), %rsi
+	movl	$1, %edi
+	movl	$0, %eax
+	call	__printf_chk@PLT
+	movl	%ebp, %esi
+	movl	%ebx, %edi
+	call	mul@PLT
+	movl	%eax, %r8d
+	movl	%ebp, %ecx
+	movl	%ebx, %edx
+	leaq	.LC3(%rip), %rsi
+	movl	$1, %edi
+	movl	$0, %eax
+	call	__printf_chk@PLT
+	movl	$0, %eax
+.L1:
+	addq	$8, %rsp
+	.cfi_remember_state
+	.cfi_def_cfa_offset 24
 	popq	%rbx
-	popq	%rsi
+	.cfi_def_cfa_offset 16
+	popq	%rbp
+	.cfi_def_cfa_offset 8
 	ret
-.L3:
-	leaq	.LC4(%rip), %rcx
-	call	printf
+.L2:
+	.cfi_restore_state
+	leaq	.LC4(%rip), %rdi
+	call	puts@PLT
 	movl	$1, %eax
-	jmp	.L2
-	.seh_endproc
-	.ident	"GCC: (GNU) 11.2.0"
-	.def	__mingw_vfprintf;	.scl	2;	.type	32;	.endef
-	.def	atoi;	.scl	2;	.type	32;	.endef
-	.def	lessThan;	.scl	2;	.type	32;	.endef
-	.def	plus;	.scl	2;	.type	32;	.endef
-	.def	minus;	.scl	2;	.type	32;	.endef
-	.def	mul;	.scl	2;	.type	32;	.endef
+	jmp	.L1
+	.cfi_endproc
+.LFE39:
+	.size	main, .-main
+	.ident	"GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0"
+	.section	.note.GNU-stack,"",@progbits
+	.section	.note.gnu.property,"a"
+	.align 8
+	.long	1f - 0f
+	.long	4f - 1f
+	.long	5
+0:
+	.string	"GNU"
+1:
+	.align 8
+	.long	0xc0000002
+	.long	3f - 2f
+2:
+	.long	0x3
+3:
+	.align 8
+4:

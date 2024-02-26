@@ -25,17 +25,12 @@ plus: # Description: Performs integer addition
 
 # Put your code here
 # Using the negates, XOR and AND instead of add  
-	movl  %ecx, %edi	# moving x (%edi) into the result (%eax) register
-	andl  %ecx, %esi	# moving y (%esi) into a second (%ecx) register
-	
-	movl  %eax, %edi		# getting the negation of y ($ecx) 
-	xorl   %eax, %esi 		# bitwise to of adding x (%eax) and y (%ecx) saving into result register
-	
-	movl  %edi, %ecx 			# negate the result
-	sall  $1,  	%edi				# return the the result (%eax)				
-
-	movl   %esi, %eax
-	
+	xorl	%eax, %eax 			# clearing the result register (%eax)
+	xorl	%edx, %edx  		# clearing variable register (%edx)
+	xorl	%ecx, %ecx			# clearing variable register (%ecx)
+	movl	%esi, %edx			# move the x (%esi) variable into another register (%edx)
+	movl	%edi, %ecx			# move the y (%edi) variable into another register (%ecx)
+	lea 	(%edx, %ecx), %eax	# adding the integers x (%edi) and y (%esi) into result 
 	ret
 
 minus: # Description: Performs integer subtraction
@@ -44,14 +39,16 @@ minus: # Description: Performs integer subtraction
 # - you cannot use a loop
 
 # Put your code here
-#using addl instead of sub
-	#xorl  %eax, %eax	# xor'ing result register
-	#xorl  %edx, %edx	# xor'ing storing register
-	movl  %edi, %eax	# moving x (%edi) into the result (%eax) register
-	notl  %esi			# getting the negation of y ($esi)
-	addl  %esi, %eax	# adding the negation of y (esi) into the result (%eax) register
-	notl  %eax			# negate the result
-	ret					# return the the result (%eax)
+#using addl and adcl instead of sub
+	xorl	%eax, %eax			# clearing result register
+	xorl	%edx, %edx  		# clearing variable register (%edx)
+	xorl	%ecx, %ecx			# clearing variable register (%ecx)
+	movl	%esi, %edx			# move the x (%esi) variable into another register (%edx)
+	movl	%edi, %ecx			# move the y (%edi) variable into another register (%ecx)
+	negl	%ecx				# negating the y (%ecx) variable
+	lea		(%edx, %ecx), %eax	# adding the ineger x (%edx) with negated y (%ecx) into result
+	negl	%eax				# negatiing the result (%eax)
+	ret							# return the the result (%eax)
 
 mul: # Description: Performs integer multiplication - when both operands are non-negative!
 # You can assume that both operands are non-negative.
@@ -62,23 +59,25 @@ mul: # Description: Performs integer multiplication - when both operands are non
 
 # algorithm:
 # set result variable to 0.
-# Loop: while the second operand is greater than 0
-#    1. If the second operand is odd, add the first operand to the result.
-#    2. Shift the first operand to the left by 1.
-#    3. Shift the second operand to the right by 1.
+# Loop: while the second operand is greater than counter
+#    1. add x into the result variable
+#	 2.	increment the counter variable
+# End loop when y and the counter are the same   
 # return
 
 # Put your code here
 # using shifts instead of mul
-  #xorl  %eax, %eax		# xor'ing result register
-  #xorl  %edx, %edx		# xor'ing counter register
-  movl  %edi, %ecx		# moving x (%edi) into a register (%ecx) 
-  movl  %esi, %ebx		# moving y (%esi) into a register (%ebx)
+  xorl  %eax, %eax		# clearing result register
+  xorl  %edx, %edx		# clearing the variable register (%edx)
+  xorl 	%ecx, %ecx		# clearing the variable register (%ecx)
+  xorl	%ebx, %ebx		# clearing the variable register (%ebx)	
+  movl  %esi, %edx		# moving x (%esi) into a register (%edx) 
+  movl  %edi, %edx		# moving y (%edi) into a register (%edx)
   jmp   .L2				# jump to the compare loop
 .L3:
-  addl  %edi, %eax 		# Add x to the result stored in eax
-  addl  $1, %edx 		# increment the counterby 1 stored in edx
+  addl  %esi, %eax 		# Add x to the result stored in eax
+  addl  $1, %ebx 		# increment the counterby 1 stored in ebx
 .L2:
-  cmpl  %ebx, %edx 		# Compare the value of y (%ebx) with counter (%edx)
-  jne   .L3				# jump to L3 loops if y (%ebx) is larger the counter (%edx)
+  cmpl  %edx, %ebx 		# Compare the value of y (%edx) with counter (%ebx)
+  jne   .L3				# jump to L3 loops if y (%edx) is larger the counter (%ebx)
   ret					# return the result
