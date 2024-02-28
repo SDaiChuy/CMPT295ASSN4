@@ -26,11 +26,11 @@ plus: # Description: Performs integer addition
 # Put your code here
 # Using the negates, XOR and AND instead of add  
 	xorl	%eax, %eax 			# clearing the result register (%eax)
-	xorl	%edx, %edx  		# clearing variable register (%edx)
+	xorl	%edx, %edx  			# clearing variable register (%edx)
 	xorl	%ecx, %ecx			# clearing variable register (%ecx)
 	movl	%esi, %edx			# move the x (%esi) variable into another register (%edx)
 	movl	%edi, %ecx			# move the y (%edi) variable into another register (%ecx)
-	lea 	(%edx, %ecx), %eax	# adding the integers x (%edi) and y (%esi) into result 
+	lea 	(%edx, %ecx), %eax		# adding the integers x (%edi) and y (%esi) into result 
 	ret
 
 minus: # Description: Performs integer subtraction
@@ -41,12 +41,12 @@ minus: # Description: Performs integer subtraction
 # Put your code here
 #using addl and adcl instead of sub
 	xorl	%eax, %eax			# clearing result register
-	xorl	%edx, %edx  		# clearing variable register (%edx)
+	xorl	%edx, %edx  			# clearing variable register (%edx)
 	xorl	%ecx, %ecx			# clearing variable register (%ecx)
 	movl	%esi, %edx			# move the x (%esi) variable into another register (%edx)
 	movl	%edi, %ecx			# move the y (%edi) variable into another register (%ecx)
 	negl	%ecx				# negating the y (%ecx) variable
-	lea		(%edx, %ecx), %eax	# adding the ineger x (%edx) with negated y (%ecx) into result
+	lea	(%edx, %ecx), %eax		# adding the ineger x (%edx) with negated y (%ecx) into result
 	negl	%eax				# negatiing the result (%eax)
 	ret							# return the the result (%eax)
 
@@ -73,11 +73,11 @@ mul: # Description: Performs integer multiplication - when both operands are non
   xorl	%ebx, %ebx		# clearing the variable register (%ebx)	
   movl  %esi, %edx		# moving x (%esi) into a register (%edx) 
   movl  %edi, %edx		# moving y (%edi) into a register (%edx)
-  jmp   .L2				# jump to the compare loop
+  jmp   .L2			# jump to the compare loop
 .L3:
   addl  %esi, %eax 		# Add x to the result stored in eax
   addl  $1, %ebx 		# increment the counterby 1 stored in ebx
 .L2:
   cmpl  %edx, %ebx 		# Compare the value of y (%edx) with counter (%ebx)
-  jne   .L3				# jump to L3 loops if y (%edx) is larger the counter (%ebx)
-  ret					# return the result
+  jne   .L3			# jump to L3 loops if y (%edx) is larger the counter (%ebx)
+  ret				# return the result
